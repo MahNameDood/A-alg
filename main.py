@@ -5,7 +5,7 @@ from color_props import colors_list
 pygame.init()
 pygame.font.init()
 
-verdana = pygame.font.SysFont('verdana', 10)
+verdana = pygame.font.SysFont('verdana', 20)
 
 WIDTH = 1800
 HEIGHT = 1000
@@ -35,22 +35,31 @@ while True:
 				editing_selected_idx -= 1
 
 	win.fill((0,0,0))
+	keys = pygame.key.get_pressed()
 
-	if mode == 'editing' and pygame.mouse.get_pressed()[0]:
-		hovered = (round((pygame.mouse.get_pos()[0]-size/2)/size), round((pygame.mouse.get_pos()[1]-size/2)/size))
-		if colors_list[editing_selected_idx] == 'start':
-			beginning_pos = hovered
-		elif colors_list[editing_selected_idx] == 'end':
-			end_pos = hovered
-		elif colors_list[editing_selected_idx] == 'unwalkable':
-			walls.append(hovered)
-		else:
-			if hovered == beginning_pos:
-				beginning_pos = 'none'
-			elif hovered == end_pos:
-				end_pos = 'none'
-			elif walls.count(hovered) > 0:
-				walls.remove(hovered)
+
+
+	if mode == 'editing':
+		if pygame.mouse.get_pressed()[0]:
+			hovered = (round((pygame.mouse.get_pos()[0]-size/2)/size), round((pygame.mouse.get_pos()[1]-size/2)/size))
+			if colors_list[editing_selected_idx] == 'start':
+				beginning_pos = hovered
+			elif colors_list[editing_selected_idx] == 'end':
+				end_pos = hovered
+			elif colors_list[editing_selected_idx] == 'unwalkable':
+				walls.append(hovered)
+			else:
+				if hovered == beginning_pos:
+					beginning_pos = 'none'
+				elif hovered == end_pos:
+					end_pos = 'none'
+				elif walls.count(hovered) > 0:
+					walls.remove(hovered)
+
+		if keys[pygame.K_RETURN]:
+			mode = 'simulating'
+
+
 
 	gf.render(win, size, grid, beginning_pos, end_pos, walls)
 
