@@ -10,7 +10,7 @@ def create(w,h):
 
 	return np.array(grid)
 
-def render(win, size, grid, beginning_pos, end_pos, walls):
+def render(win, size, grid, beginning_pos, end_pos, walls, opened, closed):
 	for y in range(len(grid)):
 		for x in range(len(grid[y])):
 			rect = pygame.Rect((x*size, y*size), (size, size))
@@ -22,6 +22,10 @@ def render(win, size, grid, beginning_pos, end_pos, walls):
 				col = colors['end']
 			elif walls.count((x,y))>0:
 				col = colors['unwalkable']
+			elif opened.count((x,y))>0:
+				col = colors['open']
+			elif closed.count((x,y))>0:
+				col = colors['closed']
 
 			pygame.draw.rect(win, col, rect)
 
